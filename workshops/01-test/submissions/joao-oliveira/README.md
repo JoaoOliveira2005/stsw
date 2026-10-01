@@ -266,7 +266,9 @@ O relatório é gerado em `target/site/serenity/index.html`:
 xdg-open target/site/serenity/index.html                          # Linux
 open target/site/serenity/index.html                              # macOS
 start target\site\serenity\index.html                             # Windows (cmd)
-explorer.exe "$(wslpath -w target/site/serenity/index.html)"      # WSL
+
+# WSL: abre no Chrome do Windows
+"/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" "file:$(wslpath -w target/site/serenity/index.html | tr '\\' '/')"
 ```
 
 No relatório, clique em um cenário e depois em um passo para ver o print da tela daquele momento.

@@ -100,12 +100,19 @@ O relatório fica em `target/site/serenity/index.html`. Ainda dentro da pasta `s
 
 | Sistema | Comando |
 |---|---|
-| WSL | `explorer.exe "$(wslpath -w target/site/serenity/index.html)"` |
 | Linux | `xdg-open target/site/serenity/index.html` |
 | macOS | `open target/site/serenity/index.html` |
 | Windows (cmd) | `start target\site\serenity\index.html` |
 
-Também dá para abrir o arquivo com dois cliques no explorador de arquivos.
+**No WSL**, abra direto no Chrome do Windows. O `explorer.exe` nem sempre abre arquivos que estão dentro do Linux:
+
+```bash
+"/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" "file:$(wslpath -w target/site/serenity/index.html | tr '\\' '/')"
+```
+
+Outra opção é colar na barra do Chrome o endereço `file://wsl.localhost/Ubuntu/<caminho até o projeto>/src/target/site/serenity/index.html`.
+
+> **Dica:** deixe a aba do relatório aberta. Depois de rodar `mvn clean verify` de novo, basta apertar **F5** para ver o relatório atualizado.
 
 **O que olhar no relatório:**
 
@@ -167,4 +174,4 @@ Para ver como o Serenity mostra um erro:
 |---|---|
 | `mvn clean verify` | Roda os 6 cenários (Chrome escondido) e gera o relatório |
 | `mvn clean verify -Dheadless.mode=false` | Mesma coisa, mostrando o Chrome na tela |
-| `explorer.exe "$(wslpath -w target/site/serenity/index.html)"` | Abre o relatório (WSL) |
+| F5 na aba do relatório | Mostra o relatório da última execução (veja a seção 4 para abrir a primeira vez) |
