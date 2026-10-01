@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Tarefas - IDP</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f5; color: #111827; margin: 0; }
+        main { max-width: 480px; margin: 60px auto; background: #fff; padding: 32px; border-radius: 8px;
+               box-shadow: 0 2px 8px rgba(0, 0, 0, .08); }
+        h1 { margin-top: 0; font-size: 24px; }
+        label { display: block; margin-top: 12px; font-weight: bold; }
+        input[type=text], input[type=password] { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+        button { margin-top: 16px; padding: 8px 16px; background: #34d17f; border: 0; border-radius: 4px;
+                 font-weight: bold; cursor: pointer; }
+        .erro { color: #c0392b; margin-top: 12px; }
+        .escondido { display: none; }
+        .linha { display: flex; gap: 8px; align-items: center; }
+        .linha input { flex: 1; margin-top: 0; }
+        .linha button { margin-top: 0; }
+        ul { padding-left: 0; list-style: none; }
+        li { display: flex; justify-content: space-between; align-items: center; padding: 8px 0;
+             border-bottom: 1px solid #e5e7eb; }
+        li button { margin-top: 0; background: #ff7a45; color: #fff; }
+        li.concluida .texto { text-decoration: line-through; color: #6b7280; }
+    </style>
+</head>
+<body>
+<main>
+    <!-- Tela de login -->
+    <section id="tela-login">
+        <h1>Entrar</h1>
+        <label for="usuario">Usuário</label>
+        <input type="text" id="usuario" autocomplete="off">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha">
+        <button id="entrar" type="button">Entrar</button>
+        <p id="erro" class="erro escondido"></p>
+    </section>
+
+    <!-- Tela de tarefas (aparece depois do login) -->
+    <section id="tela-tarefas" class="escondido">
+        <h1 id="boas-vindas"></h1>
+        <div class="linha">
+            <input type="text" id="nova-tarefa" placeholder="O que você precisa fazer?">
+            <button id="adicionar" type="button">Adicionar</button>
+        </div>
+        <ul id="lista-tarefas"></ul>
+    </section>
+</main>
+
+<script>
+    const USUARIO_VALIDO = "aluno";
+    const SENHA_VALIDA = "idp123";
+    const ATRASO_DO_SERVIDOR_MS = 800;
+
+    const erro = document.getElementById("erro");
+
+    // Simula um servidor lento: a resposta do login só chega depois de 800 ms.
+    document.getElementById("entrar").addEventListener("click", () => {
+        const usuario = document.getElementById("usuario").value;
+        const senha = document.getElementById("senha").value;
+        erro.classList.add("escondido");
+
+        setTimeout(() => {
+            if (usuario === USUARIO_VALIDO && senha === SENHA_VALIDA) {
+                document.getElementById("tela-login").classList.add("escondido");
+                document.getElementById("boas-vindas").textContent = "Olá, " + usuario + "!";
+                document.getElementById("tela-tarefas").classList.remove("escondido");
+            } else {
+                erro.textContent = "Usuário ou senha inválidos.";
+                erro.classList.remove("escondido");
+            }
+        }, ATRASO_DO_SERVIDOR_MS);
+    });
+
+    // Tarefas em branco são ignoradas.
+    document.getElementById("adicionar").addEventListener("click", () => {
+        const campo = document.getElementById("nova-tarefa");
+        const nome = campo.value.trim();
+        campo.value = "";
+        if (nome === "") {
+            return;
+        }
+
+        const item = document.createElement("li");
+        const texto = document.createElement("span");
+        texto.className = "texto";
+        texto.textContent = nome;
+        const concluir = document.createElement("button");
+        concluir.type = "button";
+        concluir.className = "concluir";
+        concluir.textContent = "Concluir";
+        concluir.addEventListener("click", () => item.classList.add("concluida"));
+
+        item.append(texto, concluir);
+        document.getElementById("lista-tarefas").appendChild(item);
+    });
+</script>
+</body>
+</html>

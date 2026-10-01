@@ -1,0 +1,19 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Sem isso o Selenium e o Serenity enchem o console de mensagens DEBUG -->
+    <logger name="net.serenitybdd" level="INFO"/>
+    <logger name="net.serenitybdd.core.webdriver" level="WARN"/>
+    <logger name="net.thucydides" level="INFO"/>
+    <logger name="org.openqa" level="WARN"/>
+    <logger name="io.netty" level="WARN"/>
+    <logger name="org.asynchttpclient" level="WARN"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
